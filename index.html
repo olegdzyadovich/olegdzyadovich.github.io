@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oleg Dzyadovich — Software QA Lead Engineer. 7+ years in quality assurance, release validation, and automation for networked AV and cloud-connected devices.">
+    <meta name="theme-color" content="#FAFAF7">
+    <title>Oleg Dzyadovich — Software QA Lead Engineer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ─── TOKENS ─────────────────────────────── */
+        :root {
+            --bg:         #FAFAF7;
+            --bg-2:       #F2F1EC;
+            --text:       #111111;
+            --text-2:     #6B6B6B;
+            --text-3:     #9A9A95;
+            --border:     rgba(0,0,0,0.08);
+            --border-2:   rgba(0,0,0,0.14);
+            --accent:     #E8634A;
+            --accent-2:   #C14A33;
+            --card:       rgba(255,255,255,0.6);
+            --shadow:     0 1px 2px rgba(0,0,0,0.04), 0 12px 36px rgba(0,0,0,0.06);
+        }
+
+        [data-theme="dark"] {
+            --bg:         #0E0E0C;
+            --bg-2:       #18181510;
+            --text:       #F5F5F0;
+            --text-2:     #A8A8A2;
+            --text-3:     #6A6A65;
+            --border:     rgba(255,255,255,0.1);
+            --border-2:   rgba(255,255,255,0.18);
+            --accent:     #FF8866;
+            --accent-2:   #FFA588;
+            --card:       rgba(255,255,255,0.03);
+            --shadow:     0 1px 2px rgba(0,0,0,0.2), 0 16px 48px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-weight: 400;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.55;
+            transition: background .5s ease, color .5s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        ::selection { background: var(--accent); color: #fff; }
+
+        /* ─── CURSOR SPOTLIGHT ───────────────────── */
+        .spotlight {
+            position: fixed;
+            top: 0; left: 0;
+            width: 600px; height: 600px;
+            pointer-events: none;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+            opacity: 0.08;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: opacity .4s ease;
+            will-change: transform;
+            filter: blur(40px);
+        }
+        [data-theme="dark"] .spotlight { opacity: 0.18; }
+        @media (max-width: 768px) { .spotlight { display: none; } }
+
+        /* ─── READING PROGRESS ───────────────────── */
+        .progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            width: 0%;
+            background: var(--accent);
+            z-index: 1000;
+            transition: width .1s linear;
+        }
+
+        /* ─── HEADER ─────────────────────────────── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(20px, 5vw, 56px);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: color-mix(in srgb, var(--bg) 75%, transparent);
+            border-bottom: 1px solid transparent;
+            transition: border-color .3s;
+        }
+        header.scrolled { border-bottom-color: var(--border); }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+        .logo .dot {
+            color: var(--accent);
+            display: inline-block;
+            transform: translateY(2px);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+        nav a {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-2);
+            transition: color .2s;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.02em;
+        }
+        nav a:hover { color: var(--text); }
+
+        .theme-toggle {
+            width: 36px; height: 36px;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            transition: border-color .2s, transform .3s;
+        }
+        .theme-toggle:hover { border-color: var(--border-2); transform: rotate(20deg); }
+        .theme-toggle svg { width: 16px; height: 16px; }
+        .theme-toggle .sun { display: none; }
+        [data-theme="dark"] .theme-toggle .sun { display: block; }
+        [data-theme="dark"] .theme-toggle .moon { display: none; }
+
+        @media (max-width: 640px) {
+            nav .nav-link { display: none; }
+        }
+
+        /* ─── LAYOUT ─────────────────────────────── */
+        main {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 clamp(20px, 5vw, 56px);
+        }
+
+        section {
+            padding: clamp(60px, 10vw, 120px) 0;
+            border-top: 1px solid var(--border);
+        }
+        section:first-of-type { border-top: none; }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-2);
+            margin-bottom: 28px;
+        }
+        .eyebrow::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        /* ─── HERO ───────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 140px 0 80px;
+            position: relative;
+        }
+
+        .hero-intro {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-2);
+            margin-bottom: 24px;
+            letter-spacing: 0.02em;
+        }
+        .hero-intro .wave { display: inline-block; animation: wave 2.5s infinite; transform-origin: 70% 70%; }
+        @keyframes wave {
+            0%, 60%, 100% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 9vw, 120px);
+            font-weight: 400;
+            letter-spacing: -0.035em;
+            line-height: 0.95;
+            margin-bottom: 24px;
+        }
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--accent);
+        }
+
+        .hero-role {
+            font-size: clamp(18px, 2.5vw, 26px);
+            font-weight: 400;
+            color: var(--text-2);
+            margin-bottom: 40px;
+            min-height: 1.4em;
+        }
+        .hero-role .rotator {
+            color: var(--text);
+            font-weight: 500;
+            display: inline-block;
+            position: relative;
+        }
+        .hero-role .caret {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--accent);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 1s steps(2) infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            font-size: 14px;
+            color: var(--text-2);
+            margin-bottom: 48px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hero-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-meta .dot {
+            width: 6px; height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--border-2);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: background .25s, color .25s, border-color .25s;
+            will-change: transform;
+        }
+        .btn svg { width: 14px; height: 14px; }
+        .btn:hover { border-color: var(--text); }
+
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+        .btn-primary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* ─── SECTION HEADS ──────────────────────── */
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 56px;
+        }
+        .section-head h2 {
+            font-size: clamp(32px, 5vw, 56px);
+            max-width: 700px;
+        }
+        .section-head h2 em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--accent);
+        }
+        .section-head .note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-3);
+        }
+
+        /* ─── ABOUT ──────────────────────────────── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            font-size: 17px;
+            color: var(--text-2);
+        }
+        .about-grid p { margin-bottom: 18px; }
+        .about-grid strong { color: var(--text); font-weight: 600; }
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; gap: 16px; }
+        }
+
+        /* ─── HOW I WORK ─────────────────────────── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .card {
+            padding: 32px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            transition: transform .4s cubic-bezier(.2,.7,.2,1), border-color .3s, box-shadow .3s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-2);
+            box-shadow: var(--shadow);
+        }
+        .card-num {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: 32px;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+        .card p {
+            font-size: 15px;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+        @media (max-width: 900px) {
+            .cards { grid-template-columns: 1fr; }
+        }
+
+        /* ─── EXPERIENCE TIMELINE ────────────────── */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 1px;
+            background: var(--border);
+        }
+        .timeline-line {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            width: 1px;
+            height: 0;
+            background: var(--accent);
+            transition: height .1s linear;
+        }
+
+        .job {
+            position: relative;
+            padding-bottom: 56px;
+        }
+        .job:last-child { padding-bottom: 0; }
+        .job::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 8px;
+            width: 15px; height: 15px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--border-2);
+            transition: border-color .3s, background .3s;
+        }
+        .job.visible::before {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .job-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-3);
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+        .job h3 {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .job h3 .company {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            color: var(--text-2);
+            letter-spacing: 0;
+            display: block;
+            margin-top: 6px;
+        }
+        .job ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 18px;
+        }
+        .job li {
+            font-size: 15px;
+            color: var(--text-2);
+            padding-left: 22px;
+            position: relative;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .job li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.7em;
+            width: 12px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        /* ─── SKILLS ─────────────────────────────── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        .skill-group h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-3);
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .chip {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-2);
+            transition: color .2s, border-color .2s, background .2s, transform .2s;
+            background: var(--card);
+        }
+        .chip:hover {
+            color: var(--text);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        @media (max-width: 900px) {
+            .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+        }
+        @media (max-width: 520px) {
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─── CERTS ──────────────────────────────── */
+        .certs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .cert {
+            padding: 24px 28px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: border-color .3s, transform .3s;
+        }
+        .cert:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .cert-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: 20px;
+        }
+        .cert h4 { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+        .cert p { font-size: 13px; color: var(--text-2); }
+        @media (max-width: 640px) { .certs { grid-template-columns: 1fr; } }
+
+        /* ─── CONTACT ────────────────────────────── */
+        .contact {
+            text-align: center;
+            padding: clamp(80px, 14vw, 180px) 0;
+        }
+        .contact h2 {
+            font-size: clamp(40px, 7vw, 96px);
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+        .contact h2 em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--accent);
+        }
+        .contact-email {
+            display: inline-block;
+            font-family: 'Fraunces', serif;
+            font-size: clamp(20px, 3vw, 32px);
+            font-weight: 400;
+            margin-bottom: 40px;
+            position: relative;
+            transition: color .2s;
+        }
+        .contact-email::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            bottom: -4px;
+            height: 1px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s cubic-bezier(.2,.7,.2,1);
+        }
+        .contact-email:hover { color: var(--accent); }
+        .contact-email:hover::after { transform: scaleX(1); }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* ─── TOAST ──────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text);
+            color: var(--bg);
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2000;
+            box-shadow: var(--shadow);
+            transition: opacity .3s, transform .3s cubic-bezier(.2,.7,.2,1);
+        }
+        .toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast svg { width: 14px; height: 14px; color: var(--accent); }
+
+        /* ─── FOOTER ─────────────────────────────── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-3);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* ─── REVEAL ANIMATIONS ──────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+        .reveal.delay-1 { transition-delay: .08s; }
+        .reveal.delay-2 { transition-delay: .16s; }
+        .reveal.delay-3 { transition-delay: .24s; }
+        .reveal.delay-4 { transition-delay: .32s; }
+        .reveal.delay-5 { transition-delay: .40s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress" id="progress"></div>
+    <div class="spotlight" id="spotlight"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span id="toast-text">Email copied</span>
+    </div>
+
+    <!-- ─── HEADER ───────────────────────────────── -->
+    <header id="header">
+        <a href="#top" class="logo">Oleg Dzyadovich<span class="dot">.</span></a>
+        <nav>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#work" class="nav-link">Work</a>
+            <a href="#experience" class="nav-link">Experience</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            </button>
+        </nav>
+    </header>
+
+    <main id="top">
+
+        <!-- ─── HERO ─────────────────────────────── -->
+        <section class="hero">
+            <p class="hero-intro reveal"><span class="wave">👋</span> &nbsp;Hello, I'm</p>
+            <h1 class="reveal delay-1">Oleg <em>Dzyadovich</em></h1>
+            <div class="hero-role reveal delay-2">
+                <span class="rotator" id="rotator">Software QA Lead Engineer</span><span class="caret"></span>
+            </div>
+            <div class="hero-meta reveal delay-3">
+                <span><span class="dot"></span> Sacramento, CA</span>
+                <span>7+ years in QA</span>
+                <span>Open to new roles</span>
+            </div>
+            <div class="hero-cta reveal delay-4">
+                <a href="Resume_Oleg_Dzyadovich.pdf" class="btn btn-primary magnetic" download>
+                    Download Resume
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                </a>
+                <a href="mailto:olegdzyadovich@gmail.com" class="btn magnetic copy-email" data-email="olegdzyadovich@gmail.com">
+                    Get in touch
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- ─── ABOUT ────────────────────────────── -->
+        <section id="about">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow reveal">About</p>
+                    <h2 class="reveal delay-1">A context-driven QA engineer who <em>ships</em> the ship gate.</h2>
+                </div>
+                <p class="note reveal delay-2">01 / 05</p>
+            </div>
+            <div class="about-grid">
+                <div class="reveal">
+                    <p><strong>Software QA Lead Engineer with 7+ years</strong> in software quality assurance. I own end-to-end QA and release-candidate ship-gate decisions for two concurrent product lines at Biamp Systems — a <strong>room-control conferencing platform</strong> and a <strong>professional audio endpoint platform</strong> — across Web, Desktop (Mac/Windows), Mobile (iOS/Android), and firmware/hardware.</p>
+                    <p>I author comprehensive Xray test libraries and drive release validation across multiple product cycles, while facilitating Scrum for a 6-person engineering team.</p>
+                </div>
+                <div class="reveal delay-1">
+                    <p>My testing philosophy is <strong>context-driven and risk-based</strong> (Rapid Software Testing). I chase the defects that matter — recovery-sensitive bugs, session drops, peripheral enumeration issues, real-time media corruption — not just the ones that are easy to script.</p>
+                    <p>I integrate <strong>Claude AI</strong> and <strong>GitHub Copilot</strong> into daily QA workflows: bug-report drafting, Xray test-charter generation, exploratory coverage analysis, and Playwright / Python automation.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── HOW I WORK ───────────────────────── -->
+        <section id="work">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow reveal">How I work</p>
+                    <h2 class="reveal delay-1">Three principles that <em>shape every test</em>.</h2>
+                </div>
+                <p class="note reveal delay-2">02 / 05</p>
+            </div>
+            <div class="cards">
+                <div class="card reveal">
+                    <span class="card-num">01</span>
+                    <h3>Context-Driven</h3>
+                    <p>Rapid Software Testing mindset. Every test plan is shaped by product risk, user context, and the specific failure modes that matter for this release — not a generic checklist copied between projects.</p>
+                </div>
+                <div class="card reveal delay-1">
+                    <span class="card-num">02</span>
+                    <h3>Risk-Based</h3>
+                    <p>I gate releases on the defects that ship users would notice first: peripheral enumeration, session recovery, real-time media integrity, and platform-specific regressions. Coverage follows the risk, not the other way around.</p>
+                </div>
+                <div class="card reveal delay-2">
+                    <span class="card-num">03</span>
+                    <h3>AI-Augmented</h3>
+                    <p>Claude AI and GitHub Copilot in the daily loop — test-charter generation, bug report drafting, exploratory coverage gap analysis, Playwright and pytest scaffolding. AI accelerates the mechanical work so I can focus on judgment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── EXPERIENCE ───────────────────────── -->
+        <section id="experience">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow reveal">Experience</p>
+                    <h2 class="reveal delay-1">A decade-plus of <em>shipping</em> software.</h2>
+                </div>
+                <p class="note reveal delay-2">03 / 05</p>
+            </div>
+
+            <div class="timeline" id="timeline">
+                <div class="timeline-line" id="timeline-line"></div>
+
+                <div class="job reveal">
+                    <p class="job-meta">JAN 2025 — PRESENT</p>
+                    <h3>Software QA Lead Engineer
+                        <span class="company">Biamp Systems · Beaverton, OR</span>
+                    </h3>
+                    <ul>
+                        <li>Own end-to-end QA and release-candidate ship-gate decisions for two concurrent product lines — a room-control conferencing platform (touchscreen controllers, Mac/Windows desktop, Web, iOS/Android, USB camera peripherals) and a professional audio endpoint platform (firmware + software).</li>
+                        <li>Author comprehensive Xray test-case libraries and lead RC smoke-test cycles, gating firmware, hardware, and cross-platform client releases.</li>
+                        <li>Drive defect triage across multiple engineering teams — routing, reproducing, and verifying fixes for release-blocking severity issues across firmware and cross-platform clients.</li>
+                        <li>Facilitate Agile / Scrum ceremonies for a 6-person engineering team while owning hands-on QA execution.</li>
+                        <li>Integrate Claude AI (Anthropic) and GitHub Copilot into daily workflows — bug-report drafting, Xray test-charter generation, exploratory coverage analysis, and Playwright / Python automation.</li>
+                    </ul>
+                </div>
+
+                <div class="job reveal">
+                    <p class="job-meta">FEB 2022 — JAN 2025</p>
+                    <h3>Software QA Engineer
+                        <span class="company">Biamp Systems · Beaverton, OR</span>
+                    </h3>
+                    <ul>
+                        <li>Validated networked AV systems end-to-end — firmware, Mac / Windows desktop, Web, iOS / Android, and USB camera peripherals — catching integration defects at firmware / client boundaries.</li>
+                        <li>Designed test plans covering regression, integration, system, session-based exploratory, and localization / i18n scenarios across every major product release.</li>
+                        <li>Built and maintained Playwright (JavaScript) and Pytest (Python) automation for regression and smoke-test workflows integrated with CI / CD pipelines.</li>
+                        <li>Investigated intermittent, recovery-sensitive defects, session drops, peripheral enumeration inconsistencies, real-time media corruption, and platform-specific crashes, partnering with engineering on root-cause analysis.</li>
+                    </ul>
+                </div>
+
+                <div class="job reveal">
+                    <p class="job-meta">MAR 2019 — FEB 2022</p>
+                    <h3>Software QA Engineer
+                        <span class="company">Adamant Systems · San Diego, CA</span>
+                    </h3>
+                    <ul>
+                        <li>Conducted manual, exploratory, functional, regression, and API testing (REST, Postman) across web and mobile applications.</li>
+                        <li>Collaborated with offshore Agile teams on sprint planning, defect prioritization, and release management.</li>
+                        <li>Authored QA documentation — test plans, checklists, traceability matrices, and release notes.</li>
+                        <li>Led root-cause analysis and defect triage, reducing recurring defects in production releases.</li>
+                    </ul>
+                </div>
+
+                <div class="job reveal">
+                    <p class="job-meta">SEP 2008 — FEB 2019</p>
+                    <h3>Logistics Specialist
+                        <span class="company">Kuehne-Nagel &amp; Fastrucking LLC · San Diego, CA &amp; Kyiv, Ukraine</span>
+                    </h3>
+                    <ul>
+                        <li>Designed a logical database for existing business processes and collaborated with 10+ cross-functional teams on on-time, on-budget deliverables.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SKILLS ───────────────────────────── -->
+        <section id="skills">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow reveal">Skills</p>
+                    <h2 class="reveal delay-1">The <em>toolkit</em>.</h2>
+                </div>
+                <p class="note reveal delay-2">04 / 05</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-group reveal">
+                    <h4>Testing</h4>
+                    <div class="chip-list">
+                        <span class="chip">Manual</span>
+                        <span class="chip">Exploratory</span>
+                        <span class="chip">Functional</span>
+                        <span class="chip">Regression</span>
+                        <span class="chip">Integration</span>
+                        <span class="chip">System</span>
+                        <span class="chip">Smoke / Sanity</span>
+                        <span class="chip">UAT</span>
+                        <span class="chip">End-to-End</span>
+                        <span class="chip">API (REST / SOAP)</span>
+                    </div>
+                </div>
+
+                <div class="skill-group reveal delay-1">
+                    <h4>Process</h4>
+                    <div class="chip-list">
+                        <span class="chip">Test Planning</span>
+                        <span class="chip">Test Case Design</span>
+                        <span class="chip">Traceability Matrix</span>
+                        <span class="chip">Defect Lifecycle</span>
+                        <span class="chip">Root-Cause Analysis</span>
+                        <span class="chip">Release Validation</span>
+                        <span class="chip">Risk-Based Testing</span>
+                        <span class="chip">Rapid Software Testing</span>
+                        <span class="chip">Agile / Scrum / Kanban</span>
+                        <span class="chip">SDLC · STLC · CI/CD</span>
+                    </div>
+                </div>
+
+                <div class="skill-group reveal delay-2">
+                    <h4>Technologies</h4>
+                    <div class="chip-list">
+                        <span class="chip">JavaScript</span>
+                        <span class="chip">Python</span>
+                        <span class="chip">SQL</span>
+                        <span class="chip">Playwright</span>
+                        <span class="chip">Pytest</span>
+                        <span class="chip">Selenium</span>
+                        <span class="chip">Postman</span>
+                        <span class="chip">JMeter</span>
+                        <span class="chip">Charles Proxy</span>
+                        <span class="chip">Fiddler</span>
+                        <span class="chip">Chrome DevTools</span>
+                        <span class="chip">BrowserStack</span>
+                        <span class="chip">Android Studio</span>
+                        <span class="chip">TestFlight</span>
+                        <span class="chip">Claude AI</span>
+                        <span class="chip">GitHub Copilot</span>
+                    </div>
+                </div>
+
+                <div class="skill-group reveal delay-3">
+                    <h4>Management</h4>
+                    <div class="chip-list">
+                        <span class="chip">Jira</span>
+                        <span class="chip">Xray</span>
+                        <span class="chip">TestRail</span>
+                        <span class="chip">Confluence</span>
+                        <span class="chip">Git · GitHub · Bitbucket</span>
+                        <span class="chip">MySQL</span>
+                        <span class="chip">macOS · Windows · Linux</span>
+                        <span class="chip">iOS · Android</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── CERTIFICATIONS ───────────────────── -->
+        <section id="certifications">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow reveal">Credentials</p>
+                    <h2 class="reveal delay-1"><em>Certifications</em> &amp; education.</h2>
+                </div>
+                <p class="note reveal delay-2">05 / 05</p>
+            </div>
+
+            <div class="certs">
+                <div class="cert reveal">
+                    <div class="cert-icon">S</div>
+                    <div>
+                        <h4>Scrum Master Certification</h4>
+                        <p>Scrum Alliance</p>
+                    </div>
+                </div>
+                <div class="cert reveal delay-1">
+                    <div class="cert-icon">Py</div>
+                    <div>
+                        <h4>Python Selenium Automation</h4>
+                        <p>QA School</p>
+                    </div>
+                </div>
+                <div class="cert reveal delay-2">
+                    <div class="cert-icon">M</div>
+                    <div>
+                        <h4>Coursework in Management</h4>
+                        <p>International Humanitarian University</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── CONTACT ──────────────────────────── -->
+        <section class="contact" id="contact">
+            <p class="eyebrow reveal">Contact</p>
+            <h2 class="reveal delay-1">Let's <em>build</em> something that ships.</h2>
+            <a href="mailto:olegdzyadovich@gmail.com" class="contact-email reveal delay-2 copy-email" data-email="olegdzyadovich@gmail.com">olegdzyadovich@gmail.com</a>
+            <div class="contact-links reveal delay-3">
+                <a href="https://www.linkedin.com/in/oleg-dzyadovich/" class="btn magnetic" target="_blank" rel="noopener">
+                    LinkedIn
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                </a>
+                <a href="tel:+16194716220" class="btn magnetic">
+                    (619) 471-6220
+                </a>
+                <a href="Resume_Oleg_Dzyadovich.pdf" class="btn magnetic" download>
+                    Resume PDF
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <span>© 2026 Oleg Dzyadovich</span>
+            <span>Built with Claude Code · Sacramento, CA</span>
+        </footer>
+    </main>
+
+    <script>
+        // ─── THEME ───────────────────────────────────
+        const themeToggle = document.getElementById('theme-toggle');
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        // ─── CURSOR SPOTLIGHT ────────────────────────
+        const spotlight = document.getElementById('spotlight');
+        let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+        let sx = mx, sy = my;
+        window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        function animateSpotlight() {
+            sx += (mx - sx) * 0.12;
+            sy += (my - sy) * 0.12;
+            spotlight.style.transform = `translate(${sx}px, ${sy}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateSpotlight);
+        }
+        animateSpotlight();
+
+        // ─── READING PROGRESS + HEADER SCROLLED ──────
+        const progress = document.getElementById('progress');
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+            progress.style.width = scrolled + '%';
+            header.classList.toggle('scrolled', h.scrollTop > 20);
+        }, { passive: true });
+
+        // ─── ROLE ROTATOR (scramble / typewriter) ────
+        const roles = [
+            'Software QA Lead Engineer',
+            'Release Gate Owner',
+            'Context-Driven Tester',
+            'Automation Engineer',
+            'Scrum Master'
+        ];
+        const rotator = document.getElementById('rotator');
+        const chars = '!<>-_\\/[]{}—=+*^?#';
+        let roleIdx = 0;
+
+        function scrambleTo(target) {
+            return new Promise(resolve => {
+                const from = rotator.textContent;
+                const length = Math.max(from.length, target.length);
+                const queue = [];
+                for (let i = 0; i < length; i++) {
+                    const fromChar = from[i] || '';
+                    const toChar = target[i] || '';
+                    const start = Math.floor(Math.random() * 20);
+                    const end = start + Math.floor(Math.random() * 20) + 10;
+                    queue.push({ fromChar, toChar, start, end });
+                }
+                let frame = 0;
+                function update() {
+                    let output = '';
+                    let done = 0;
+                    for (let i = 0; i < queue.length; i++) {
+                        let { fromChar, toChar, start, end, char } = queue[i];
+                        if (frame >= end) { done++; output += toChar; }
+                        else if (frame >= start) {
+                            if (!char || Math.random() < 0.28) {
+                                char = chars[Math.floor(Math.random() * chars.length)];
+                                queue[i].char = char;
+                            }
+                            output += `<span style="color:var(--accent);opacity:.7">${char}</span>`;
+                        } else { output += fromChar; }
+                    }
+                    rotator.innerHTML = output;
+                    if (done === queue.length) resolve();
+                    else { frame++; requestAnimationFrame(update); }
+                }
+                update();
+            });
+        }
+        async function rotateRoles() {
+            while (true) {
+                await new Promise(r => setTimeout(r, 2800));
+                roleIdx = (roleIdx + 1) % roles.length;
+                await scrambleTo(roles[roleIdx]);
+            }
+        }
+        rotateRoles();
+
+        // ─── REVEAL ON SCROLL ────────────────────────
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // ─── TIMELINE DRAW ───────────────────────────
+        const timeline = document.getElementById('timeline');
+        const timelineLine = document.getElementById('timeline-line');
+        const jobs = document.querySelectorAll('.job');
+        function updateTimeline() {
+            if (!timeline) return;
+            const rect = timeline.getBoundingClientRect();
+            const winH = window.innerHeight;
+            const start = winH * 0.6;
+            const progress = Math.max(0, Math.min(1, (start - rect.top) / rect.height));
+            timelineLine.style.height = (progress * rect.height) + 'px';
+            jobs.forEach(job => {
+                const jr = job.getBoundingClientRect();
+                if (jr.top < winH * 0.65) job.classList.add('visible');
+            });
+        }
+        window.addEventListener('scroll', updateTimeline, { passive: true });
+        window.addEventListener('resize', updateTimeline);
+        updateTimeline();
+
+        // ─── COPY EMAIL ──────────────────────────────
+        const toast = document.getElementById('toast');
+        const toastText = document.getElementById('toast-text');
+        let toastTimer;
+        function showToast(msg) {
+            toastText.textContent = msg;
+            toast.classList.add('visible');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('visible'), 2000);
+        }
+        document.querySelectorAll('.copy-email').forEach(el => {
+            el.addEventListener('click', async e => {
+                e.preventDefault();
+                const email = el.dataset.email;
+                try {
+                    await navigator.clipboard.writeText(email);
+                    showToast('Email copied — ' + email);
+                } catch {
+                    showToast(email);
+                }
+            });
+        });
+
+        // ─── MAGNETIC BUTTONS ────────────────────────
+        document.querySelectorAll('.magnetic').forEach(el => {
+            el.addEventListener('mousemove', e => {
+                const r = el.getBoundingClientRect();
+                const x = e.clientX - r.left - r.width / 2;
+                const y = e.clientY - r.top - r.height / 2;
+                el.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px)`;
+            });
+            el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+        });
+    </script>
+</body>
+</html>
